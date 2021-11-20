@@ -1,15 +1,42 @@
 import React, {Component} from 'react';
 
-import BookList from './list/bookList'
-import bookList from'../assets/books'
+import BookList from './list/bookList';
+import bookList from'../assets/books';
+import NewBook from './representational/NewBook';
+import BookDetail from './representational/BookDetail'
+import {
+  BrowserRouter as Router,
+  
+  Route,
+  NavLink,
+  Routes,
+  Navigate
+} from "react-router-dom";
+
+
 
 class MainComponent extends Component{
      ///state
 
   state = {
     books : bookList,
-    showBooks : true
+    // showBooks : true
+    selectedBook : null
   }
+
+
+
+  selectedBookHandler = (bookId) =>{
+
+    const book = this.state.books.filter(book => book.id ===bookId)[0];
+
+    this.setState({
+      selectedBook : book
+    })
+
+  }
+
+
 
   deleteBookState = (index) =>{
 
@@ -75,45 +102,67 @@ class MainComponent extends Component{
   // }
 
 
-  toggleBooks = () =>{
-    this.setState({
-      showBooks: !this.state.showBooks
-    });
+  // toggleBooks = () =>{
+  //   this.setState({
+  //     showBooks: !this.state.showBooks
+  //   });
 
-  }
+  // }
 
 
   render(){
 
-    const style = {
 
-      border:"1px solid red",
-      borderRadius: "5px",
-      backgroundColor:"black",
-      color:"white"
-    };
+    // const style = {
+
+    //   border:"1px solid red",
+    //   borderRadius: "5px",
+    //   backgroundColor:"black",
+    //   color:"white"
+    // };
 
 
-    let books = null;
+    // let books = null;
 
-    if (this.state.showBooks){
+    // if (this.state.showBooks){
     
-       books = <BookList books = {this.state.books}
-       deleteBookState = {this.deleteBookState}
+      const books = <BookList books = {this.state.books}
+      //  deleteBookState = {this.deleteBookState}
        changeWithInputState = {this.changeWithInputState}
-       />
+       selectedBookHandler = {this.selectedBookHandler}
 
-    }
+       />
+ 
+    // }
 
 
 
 
 
   return (
-    <div className="App">
-      <h1 style={style}>  Book List </h1>
 
-      <button onClick={this.toggleBooks}>Toggle Books</button>
+   
+    
+    <div className="App">
+
+
+  
+    <nav className="nav-bar">
+      <ul>
+        <li>
+          <NavLink to="/books">Home</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/new-book">New Book</NavLink>
+        </li>
+      </ul>
+
+      </nav>
+
+      {/* <h1 style={style}>  Book List </h1> */}
+
+      {/* <button onClick={this.toggleBooks}>Toggle Books</button> */}
 
       {/* <button onClick={ () => this.changeBookState("ninetee eighty four")}>Change State</button> */}
 
@@ -142,12 +191,26 @@ class MainComponent extends Component{
         bookAuthor={this.state.books[4].bookAuthor} 
         change = {this.changeBookState.bind(this,"ninetee 84")} /> */}
 
+       <Routes>
+       
 
-        {/* {books} */}
+        {/* {this.state.showBooks ? books : null} */}
 
-        {this.state.showBooks ? books : null}
+       
+          <Route  path="/new-book" element={<NewBook/>}/>
+            
+           <Route  path="/" element={<Navigate to="/books"/>}/>
+          <Route  path="/books" element={books}/>
+            
+         <Route path="/book/:id" element={<BookDetail book={this.state.selectedBook}/>} />
+        
+
+       </Routes>
+
+       {/* <BookDetail book={this.state.selectedBook}/> */}
 
     </div>
+   
   );
   }
 }

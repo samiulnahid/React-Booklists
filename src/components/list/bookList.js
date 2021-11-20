@@ -1,25 +1,38 @@
-import React from 'react';
-import Book from '../representational/book'
+import React, { Component } from 'react';
+import Book from '../representational/book';
+import {Link} from 'react-router-dom';
 
 
-const BookList = (props) =>{
+class BookList extends Component{
+
+
+  render(){
+
+    console.log(this.props);
+
     return (
 
-        props.books.map((book , index) => {
+        this.props.books.map((book , index) => {
 
       // console.log(book.bookName);
        return (
-         <Book 
+
+        <Link to={"/book/"+book.id}  key = {book.id} style={{textDecoration: "none", color : "black"}}>
+        <Book 
             bookName={book.bookName}
             bookAuthor={book.bookAuthor} 
-            delete = { () => props.deleteBookState(index)}
-            key = {book.id}
-            inputName ={(event)=>props.changeWithInputState(event, index)}
+            // delete = { () => this.props.deleteBookState(index)}
+           
+            inputName ={(event)=>this.props.changeWithInputState(event, index)}
+            selectedBookHandler = {() => this.props.selectedBookHandler(book.id)}
         />
+        </Link>
+         
        )
 
     })
     )
+  }
 }
 
 export default BookList;

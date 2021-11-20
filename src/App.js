@@ -2,7 +2,8 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-import MainComponent from './components/mainComponent'
+import MainComponent from './components/mainComponent';
+import {BrowserRouter  } from 'react-router-dom';
 
 // //JSX
 // //functional component
@@ -23,7 +24,13 @@ import MainComponent from './components/mainComponent'
 ///class component
 
 const App = () =>{
-  return <MainComponent />
+  return ( 
+    <BrowserRouter>
+
+         <MainComponent />
+    
+    </BrowserRouter>
+ )
 }
 
 
